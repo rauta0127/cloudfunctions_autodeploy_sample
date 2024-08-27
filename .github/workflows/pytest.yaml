@@ -47,5 +47,5 @@ jobs:
       #              run test suite
       #----------------------------------------------
       - name: Test with pytest
-        run: poetry run pytest -v -s
+        run: PYTHONPATH=$(pwd) poetry run pytest -v -s
       
