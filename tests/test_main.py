@@ -6,7 +6,7 @@ from io import StringIO
 import sys
 
 # 関数をインポート
-from main import subscribe  # main.pyにコードがあると仮定
+from main import main  # main.pyにコードがあると仮定
 
 
 @pytest.fixture
@@ -27,13 +27,13 @@ def pubsub_event():
     return CloudEvent(headers, event_data)
 
 
-def test_subscribe(pubsub_event):
+def test_main(pubsub_event):
     # 標準出力をキャプチャ
     captured_output = StringIO()
     sys.stdout = captured_output
 
     # subscribe関数を呼び出す
-    subscribe(pubsub_event)
+    main(pubsub_event)
 
     # 標準出力に正しい内容が出力されたかを確認
     assert captured_output.getvalue().strip() == "Hello, World!"
