@@ -35,6 +35,7 @@ jobs:
       #     timeout: 120 # 関数のタイムアウト時間
       #     max_instances: 10 # 最大インスタンス数
       #     region: "asia-northeast1" # リージョン
+      
       - id: "deploy"
         name: Deploy to Google Cloud Functions
         run: |
