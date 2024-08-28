@@ -24,25 +24,26 @@ jobs:
       # - run: gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
       - run: gcloud auth list
       - run: gcloud config list
-      # - id: "deploy"
-      #   uses: "google-github-actions/deploy-cloud-functions@v2"
-      #   with: # Cloud Functions の設定(下記は一例)
-      #     name: "function_sample3" # 関数名
-      #     entry_point: "main" # エントリポイント
-      #     runtime: "python311" # 関数に使うランタイム
-      #     env_vars: ENV1=hogehoge, ENV2=fugafuga # 環境変数
-      #     #source_dir: "cloud_functions" # ルートディレクトリに main.py が無い時はこれでディレクトリを指定する
-      #     timeout: 120 # 関数のタイムアウト時間
-      #     max_instances: 10 # 最大インスタンス数
-      #     region: "asia-northeast1" # リージョン
-      
       - id: "deploy"
-        name: Deploy to Google Cloud Functions
-        run: |
-          gcloud functions deploy function_sample4 \
-            --gen2 \
-            --trigger-http \
-            --region asia-northeast1 \
-            --runtime python311 \
-            --entry-point main \
-            --allow-unauthenticated
+        uses: "google-github-actions/deploy-cloud-functions@v2"
+        with: # Cloud Functions の設定(下記は一例)
+          name: "function_sample3" # 関数名
+          entry_point: "main" # エントリポイント
+          runtime: "python311" # 関数に使うランタイム
+          env_vars: ENV1=hogehoge, ENV2=fugafuga # 環境変数
+          #source_dir: "cloud_functions" # ルートディレクトリに main.py が無い時はこれでディレクトリを指定する
+          timeout: 120 # 関数のタイムアウト時間
+          max_instances: 10 # 最大インスタンス数
+          region: "asia-northeast1" # リージョン
+          # event_trigger_type: "http"
+
+      # - id: "deploy"
+      #   name: Deploy to Google Cloud Functions
+      #   run: |
+      #     gcloud functions deploy function_sample4 \
+      #       --gen2 \
+      #       --trigger-http \
+      #       --region asia-northeast1 \
+      #       --runtime python311 \
+      #       --entry-point main \
+      #       --allow-unauthenticated
