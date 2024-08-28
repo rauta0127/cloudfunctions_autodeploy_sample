@@ -27,7 +27,7 @@ jobs:
       - id: "deploy"
         uses: "google-github-actions/deploy-cloud-functions@v3"
         with: # Cloud Functions の設定(下記は一例)
-          name: "function_sample5" # 関数名
+          name: "function_sample6" # 関数名
           entry_point: "main" # エントリポイント
           runtime: "python311" # 関数に使うランタイム
           env_vars: ENV1=hogehoge, ENV2=fugafuga # 環境変数
