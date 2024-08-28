@@ -21,7 +21,7 @@ jobs:
         uses: "google-github-actions/auth@v2"
         with:
           workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER_ID}} # 作成したプロバイダのID
-          service_account: "github-actions@${{ secrets.GCP_PROJECT_ID }}.iam.gserviceaccount.com" # プロバイダで指定したサービスアカウント
+          service_account: "collector@${{ secrets.GCP_PROJECT_ID }}.iam.gserviceaccount.com" # プロバイダで指定したサービスアカウント
 
       - id: "deploy"
         uses: "google-github-actions/deploy-cloud-functions@v2"
