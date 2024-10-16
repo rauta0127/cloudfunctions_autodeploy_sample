@@ -1,0 +1,61 @@
+name: Deploy Cloud Functions
+on:
+  # mainへのPush時、または手動でワークフローを実行する
+  workflow_dispatch:
+  push:
+    branches: 
+      - main
+      - develop
+jobs:
+  job_id:
+    runs-on: "ubuntu-latest"
+    permissions:
+      contents: "read"
+      id-token: "write"
+
+    steps:
+      - uses: "actions/checkout@v4"
+
+      - id: "auth"
+        uses: "google-github-actions/auth@v2"
+        with:
+          #workload_identity_provider: projects/12625448368/locations/global/workloadIdentityPools/test-pool/providers/github # 作成したプロバイダのID
+          #service_account: "collector@tradingdev-432816.iam.gserviceaccount.com" # プロバイダで指定したサービスアカウント
+          # Prod環境
+          #workload_identity_provider: projects/406269881661/locations/global/workloadIdentityPools/collector-pool/providers/github # 作成したプロバイダのID
+          #service_account: "collector@trading-416713.iam.gserviceaccount.com" # プロバイダで指定したサービスアカウント
+          workload_identity_provider: ${{ github.ref == 'refs/heads/main' && 'projects/406269881661/locations/global/workloadIdentityPools/collector-pool/providers/github' || 'projects/12625448368/locations/global/workloadIdentityPools/test-pool/providers/github' }}
+          service_account: ${{ github.ref == 'refs/heads/main' && 'collector@trading-416713.iam.gserviceaccount.com' || 'collector@tradingdev-432816.iam.gserviceaccount.com' }}
+      # - run: gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
+      - run: gcloud auth list
+      - run: gcloud config list
+      - name: Get commit time
+        id: commit_time
+        run: echo "commit_time=$(git log -1 --format=%cd --date=iso)" >> $GITHUB_ENV
+      - id: "deploy"
+        uses: "google-github-actions/deploy-cloud-functions@v3"
+        with: # Cloud Functions の設定(下記は一例)
+          name: "function_sample6" # 関数名
+          entry_point: "main" # エントリポイント
+          runtime: "python311" # 関数に使うランタイム
+          environment_variables: |-
+            TEST_ENVVAR="test-envvar"
+            GIT_COMMIT_ID=${{ github.sha }}
+            GIT_COMMIT_TIME=${{ env.commit_time }}
+          #source_dir: "cloud_functions" # ルートディレクトリに main.py が無い時はこれでディレクトリを指定する
+          service_timeout: 120 # 関数のタイムアウト時間
+          max_instance_count: 10 # 最大インスタンス数
+          region: "asia-northeast1" # リージョン
+          source_dir: "source"
+          # event_trigger_type: "http"
+
+      # - id: "deploy"
+      #   name: Deploy to Google Cloud Functions
+      #   run: |
+      #     gcloud functions deploy function_sample4 \
+      #       --gen2 \
+      #       --trigger-http \
+      #       --region asia-northeast1 \
+      #       --runtime python311 \
+      #       --entry-point main \
+      #       --allow-unauthenticated
