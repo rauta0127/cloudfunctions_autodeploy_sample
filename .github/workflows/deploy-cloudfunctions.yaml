@@ -19,8 +19,11 @@ jobs:
       - id: "auth"
         uses: "google-github-actions/auth@v2"
         with:
-          workload_identity_provider: projects/12625448368/locations/global/workloadIdentityPools/test-pool/providers/github # 作成したプロバイダのID
-          service_account: "collector@tradingdev-432816.iam.gserviceaccount.com" # プロバイダで指定したサービスアカウント
+          #workload_identity_provider: projects/12625448368/locations/global/workloadIdentityPools/test-pool/providers/github # 作成したプロバイダのID
+          #service_account: "collector@tradingdev-432816.iam.gserviceaccount.com" # プロバイダで指定したサービスアカウント
+          # Prod環境
+          workload_identity_provider: projects/406269881661/locations/global/workloadIdentityPools/collector-pool/providers/github # 作成したプロバイダのID
+          service_account: "collector@trading-416713.iam.gserviceaccount.com" # プロバイダで指定したサービスアカウント
       # - run: gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
       - run: gcloud auth list
       - run: gcloud config list
