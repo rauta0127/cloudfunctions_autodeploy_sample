@@ -30,10 +30,12 @@ jobs:
           name: "function_sample6" # 関数名
           entry_point: "main" # エントリポイント
           runtime: "python311" # 関数に使うランタイム
-          env_vars: GIT_COMMIT_ID=${{ github.sha }},GIT_COMMIT_TIME=${{ steps.commit_time.outputs.time }} # 環境変数
+          environment_variables: |-
+            GIT_COMMIT_ID=${{ github.sha }}
+            GIT_COMMIT_TIME=${{ steps.commit_time.outputs.time }}
           #source_dir: "cloud_functions" # ルートディレクトリに main.py が無い時はこれでディレクトリを指定する
-          timeout: 120 # 関数のタイムアウト時間
-          max_instances: 10 # 最大インスタンス数
+          service_timeout: 120 # 関数のタイムアウト時間
+          max_instance_count: 10 # 最大インスタンス数
           region: "asia-northeast1" # リージョン
           # event_trigger_type: "http"
 
