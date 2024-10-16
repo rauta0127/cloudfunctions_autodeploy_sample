@@ -41,6 +41,7 @@ jobs:
           service_timeout: 120 # 関数のタイムアウト時間
           max_instance_count: 10 # 最大インスタンス数
           region: "asia-northeast1" # リージョン
+          source_dir: "source"
           # event_trigger_type: "http"
 
       # - id: "deploy"
