@@ -31,8 +31,9 @@ jobs:
           entry_point: "main" # エントリポイント
           runtime: "python311" # 関数に使うランタイム
           environment_variables: |-
+            TEST_ENVVAR="test-envvar"
             GIT_COMMIT_ID=${{ github.sha }}
-            GIT_COMMIT_TIME=${{ steps.commit_time.outputs.time }}
+            GIT_COMMIT_TIME=${{ git log -1 --format=%cd --date=format:%Y%m%dh%H%M%S }}
           #source_dir: "cloud_functions" # ルートディレクトリに main.py が無い時はこれでディレクトリを指定する
           service_timeout: 120 # 関数のタイムアウト時間
           max_instance_count: 10 # 最大インスタンス数

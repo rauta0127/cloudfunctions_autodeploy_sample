@@ -15,11 +15,13 @@ def main(request: Request) -> str:
     Returns:
         str: A message with commit ID, commit time, and request data.
     """
+
+    test_envvar = os.getenv("TEST_ENVVAR", "UnknownVar")
     commit_id = os.getenv("GIT_COMMIT_ID", "UnknownCommitID")
     commit_time = os.getenv("GIT_COMMIT_TIME", "UnknownCommitTime")
     # Get the request data
     request_data = request.get_json(silent=True) or request.data.decode()
-    return f"Hello, World! (Deployed from commit: {commit_id} at {commit_time})\nYour request data: {request_data}"
+    return f"Hello, World! (test_envvar={test_envvar}) (Deployed from commit: {commit_id} at {commit_time})\nYour request data: {request_data}"
 
 
 # # Triggered from a message on a Cloud Pub/Sub topic.
