@@ -24,6 +24,9 @@ jobs:
       # - run: gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
       - run: gcloud auth list
       - run: gcloud config list
+      - name: Get commit time
+        id: commit_time
+        run: echo "commit_time=$(git log -1 --format=%cd --date=iso)" >> $GITHUB_ENV
       - id: "deploy"
         uses: "google-github-actions/deploy-cloud-functions@v3"
         with: # Cloud Functions の設定(下記は一例)
@@ -33,7 +36,7 @@ jobs:
           environment_variables: |-
             TEST_ENVVAR="test-envvar"
             GIT_COMMIT_ID=${{ github.sha }}
-            GIT_COMMIT_TIME=${{ git log -1 --format=%cd --date=format:%Y%m%dh%H%M%S }}
+            GIT_COMMIT_TIME=${{ env.commit_time }}
           #source_dir: "cloud_functions" # ルートディレクトリに main.py が無い時はこれでディレクトリを指定する
           service_timeout: 120 # 関数のタイムアウト時間
           max_instance_count: 10 # 最大インスタンス数
